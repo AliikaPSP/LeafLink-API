@@ -3,6 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+#Project related
+# Environment files
+.env
+
+# Node.js dependencies
+node_modules/
+
 # User-specific files
 *.rsuser
 *.suo
