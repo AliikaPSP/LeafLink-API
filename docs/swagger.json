@@ -4,5 +4,40 @@
         "title": "LeafLink-API",
         "version": "1.0.0",
         "description": "plants api"
+    },
+    "paths": {
+        "/plants": {
+            "get": {
+                "tags": [
+                    "plants"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "List of plants": {
+                                        "value": [
+                                            "Rose",
+                                            "Lily",
+                                            "Tulip"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Returns a list of plants"
+                    }
+                },
+                "summary": "get a list of all plants from the api",
+                "description": "Returns a list of all plants in the API to the requesting user."
+            }
+        }
     }
 }
