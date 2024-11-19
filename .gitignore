@@ -7,7 +7,7 @@
 #Project related
 ./vscode
 ./idea
-node_modules/
+./node_modules/
 .env
 
 # User-specific files
