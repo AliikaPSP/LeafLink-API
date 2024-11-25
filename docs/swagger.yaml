@@ -1,0 +1,90 @@
+openapi: 3.0.2
+info:
+    title: LeafLink-API
+    version: 1.0.0
+    description: plants api
+paths:
+    /plants:
+        get:
+            tags:
+                - plants
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                    description: Returns a list of plants
+            summary: get a list of all plants from the api
+            description: Returns a list of all plants in the API to the requesting user.
+    '/plants/{id}':
+        get:
+            tags:
+                - plants
+            parameters:
+                -
+                    examples:
+                        Example of id of a Plant:
+                            value: '1'
+                    name: id
+                    description: Id of plant the user has requested
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                Full details of a given plant:
+                                    value:
+                                        PlantID: 3
+                                        PlantName: Tulips
+                                        Description: This is a beautiful tulip plant.
+                                        Size: Small
+                                        PlantRequirements: 'Water, Soil, Light'
+                                        PlantInstructions: 'Water 2 times a week. Light: indirect'
+                    description: Returns full details of a given id plant
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Invalid plant id:
+                                    value:
+                                        -
+                                            error: Invalid id inserted
+                    description: Return status code 400 to the user if an invalid id was entered
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Plant /w+ was not found:
+                                    value:
+                                        -
+                                            error: Plant \w+ was not found in plant array.
+                    description: Plant was not found in plants array.
+            operationId: id
+            summary: Get full details of a plant
+            description: Returns full details of a given id plant
+components:
+    schemas:
+        error:
+            title: Root Type for error
+            description: ''
+            type: object
+            properties:
+                error:
+                    type: string
+            example:
+                error: Error message.
