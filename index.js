@@ -3,7 +3,7 @@ const app = require('express')();
 //npm install swagger-ui-express 
 const swaggerUI = require
 ('swagger-ui-express');
-const swaggerDoc = require(".docs/swagger.json");
+const swaggerDoc = require("./docs/swagger.json");
 
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
