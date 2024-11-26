@@ -129,6 +129,77 @@ paths:
             operationId: id
             summary: Get full details of a plant
             description: Returns full details of a given id plant
+        put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Plant'
+                        examples:
+                            Example of a plant:
+                                value:
+                                    PlantID: 4
+                                    PlantName: Cactus
+                                    Description: Pointy beautiful cactus
+                                    Size: Varies
+                                    PlantRequirements: Sun
+                                    PlantInstructions: Forget to water
+            tags:
+                - plants
+            parameters:
+                -
+                    examples:
+                        Id of plant:
+                            value: '1'
+                    name: id
+                    description: Id of plant to be updated
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                Example of a modified Plant:
+                                    value:
+                                        PlantID: '1'
+                                        PlantName: Rose
+                                        Description: Pointy beautiful cactus
+                                        Size: Varies
+                                        PlantRequirements: Sun
+                                        PlantInstructions: Forget to water
+                    description: Returns modified Plant to the user
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing parameters:
+                                    value:
+                                        -
+                                            error: One or multiple parameters are missing
+                    description: User has not added required parameters to the modified Plant
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing Plant:
+                                    value:
+                                        -
+                                            error: Plant not found
+                    description: The Plant to be updated is not found
+            operationId: id
+            summary: Update a Plant
+            description: 'Returns updated plant, when modification of a plant is successful'
 components:
     schemas:
         error:

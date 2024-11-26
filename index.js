@@ -51,8 +51,13 @@ app.get('/plants/:id', (req, res) => {
     res.send(plants[req.params.id-1])
 })
 
+//create
 app.post('/plants', (req, res) => {
-    if (!req.body.PlantName || !req.body.Description || !req.body.Size || !req.body.PlantRequirements ||!req.body.PlantInstructions) {
+    if (!req.body.PlantName || 
+        !req.body.Description || 
+        !req.body.Size || 
+        !req.body.PlantRequirements ||
+        !req.body.PlantInstructions) {
         return res.send(400).send({error: "One or multiple parameters are missing"});
     }
     
@@ -67,6 +72,33 @@ app.post('/plants', (req, res) => {
     plants.push(plant);
     res.status(201).location('${getBaseURL(req)}/plants/${plants.length}').send(plant);
 })
+
+//update a plant
+app.put('/plants/:id', (req, res) => {
+    if (req.params.id == null) {
+        return res.status(404).send({error: "Plant not found"});  //404 Not Found status code   
+    }
+    if (!req.body.PlantName ||
+        !req.body.Description ||
+        !req.body.Size ||
+        !req.body.PlantRequirements ||
+        !req.body.PlantInstructions) {
+        return res.send(400).send({error: "One or multiple parameters are missing"});
+    }
+    let plant = {
+        PlantID: req.body.PlantID,
+        PlantName: req.body.PlantName,
+        Description: req.body.Description,
+        Size: req.body.Size,
+        PlantRequirements: req.body.PlantRequirements,
+        PlantInstructions: req.body.PlantInstructions
+    }
+    plants.splice((req.body.PlantID-1), 1, plant);
+    res.status(201)
+        .location('${getBaseURL(req)}/plants/${plants.length}').send(plant);
+
+})
+
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
 
 function getBaseURL(req) 
