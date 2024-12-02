@@ -134,8 +134,7 @@ app.delete('/plants/:id', (req, res) => {
 //Users GET - Returns a list of all users in the API to the requesting user.
 app.get('/users', (req, res) => {res.send(users)});
 
-//As an app developer, I want to get full DETAILS of my given User to show in my app
-app.get('/users', (req, res) => {res.send(users)});   
+//Users DETAILS : As an app developer, I want to get full DETAILS of my given User to show in my app 
 app.get('/users/:id', (req, res) => {
     if (typeof users[req.params.id-1]
          === 'undefined') {
@@ -147,6 +146,30 @@ app.get('/users/:id', (req, res) => {
     res.send(users[req.params.id-1])
 })
 
+//Users CREATE - As an app developer, I want to be able to ADD a new User in my app
+app.post('/users', (req, res) => {
+    if (!req.body.FirstName || 
+        !req.body.LastName || 
+        !req.body.UserName || 
+        !req.body.Email ||
+        !req.body.Password ||
+         !req.body.PlantList
+    ) {
+        return res.send(400).send({error: "One or multiple parameters are missing"});
+    }
+    
+    let user = {
+        UserID: users.length + 1,
+        FirstName: req.body.FirstName,
+        LastName: req.body.LastName,
+        UserName: req.body.UserName,
+        Email: req.body.Email,
+        Password: req.body.Password,
+        PlantList: req.body.PlantList || []
+    }
+    users.push(user);
+    res.status(201).location(`${getBaseURL(req)}/users/${users.length}`).send(user);
+})
 
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    

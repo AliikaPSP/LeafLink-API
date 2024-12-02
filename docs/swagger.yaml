@@ -261,6 +261,57 @@ paths:
                     description: Returns a list of users
             summary: Get a list of all users from the api
             description: Returns a list of all users in the API to the requesting user.
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
+                        examples:
+                            User that is added:
+                                value:
+                                    FirstName: Jane
+                                    LastName: Smith
+                                    UserName: janesmith
+                                    Email: jane.smith@example.com
+                                    Password: secret123
+                                    PlantList:
+                                        - 2
+                required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                User that is added:
+                                    value: |-
+                                        {
+                                            UserID : 2,
+                                            FirstName: "Jane",
+                                            LastName: "Smith",
+                                            UserName: "janesmith",
+                                            Email: "jane.smith@example.com",
+                                            Password: "secret123",
+                                            PlantList: [2]
+                                        }
+                    description: 'Return status code 201, if creation of a new user was successful'
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing parameters:
+                                    value:
+                                        -
+                                            error: One or multiple parameters missing
+                    description: 'Returns status code 400, if one or multiple parameters are missing'
+            summary: add new user
+            description: Adds a new user into the array
     '/users/{id}':
         get:
             tags:
@@ -365,3 +416,36 @@ components:
                             "id" : 1
                         }
                     type: string
+        User:
+            description: Example of a submittable user
+            type: object
+            properties:
+                FirstName:
+                    description: ''
+                    type: string
+                LastName:
+                    description: ''
+                    type: string
+                UserName:
+                    description: ''
+                    type: string
+                Email:
+                    description: ''
+                    type: string
+                Password:
+                    description: ''
+                    type: string
+                PlantList:
+                    description: ''
+                    type: array
+                    items:
+                        type: integer
+            example: |-
+                {
+                    FirstName: "Jane",
+                    LastName: "Smith",
+                    UserName: "janesmith",
+                    Email: "jane.smith@example.com",
+                    Password: "secret123",
+                    PlantList: [2]
+                }
