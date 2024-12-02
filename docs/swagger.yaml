@@ -200,6 +200,299 @@ paths:
             operationId: id
             summary: Update a Plant
             description: 'Returns updated plant, when modification of a plant is successful'
+        delete:
+            requestBody:
+                description: Id of plant that is to be deleted
+                content:
+                    application/json:
+                        schema:
+                            type: integer
+                        examples:
+                            ID of plant to be deleted:
+                                value:
+                                    - 1
+                required: true
+            tags:
+                - plants
+            parameters:
+                -
+                    examples:
+                        Example of an Id of Plant:
+                            value: '1'
+                    name: id
+                    description: Id of Plant
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '204':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                successful error:
+                                    value:
+                                        -
+                                            error: No content
+                    description: 'Return error, in case deletion was succeful'
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Plant was not found:
+                                    value:
+                                        -
+                                            error: Plant not found
+                    description: Plant with this Id was not found
+            operationId: id
+            summary: Delete a Plant
+            description: Deletes a plant from the array based on plant id
+    /users:
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                    description: Returns a list of users
+            summary: Get a list of all users from the api
+            description: Returns a list of all users in the API to the requesting user.
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
+                        examples:
+                            User that is added:
+                                value:
+                                    FirstName: Jane
+                                    LastName: Smith
+                                    UserName: janesmith
+                                    Email: jane.smith@example.com
+                                    Password: secret123
+                                    PlantList:
+                                        - 2
+                required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                User that is added:
+                                    value: |-
+                                        {
+                                            UserID : 2,
+                                            FirstName: "Jane",
+                                            LastName: "Smith",
+                                            UserName: "janesmith",
+                                            Email: "jane.smith@example.com",
+                                            Password: "secret123",
+                                            PlantList: [2]
+                                        }
+                    description: 'Return status code 201, if creation of a new user was successful'
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing parameters:
+                                    value:
+                                        -
+                                            error: One or multiple parameters missing
+                    description: 'Returns status code 400, if one or multiple parameters are missing'
+            summary: add new user
+            description: Adds a new user into the array
+    '/users/{id}':
+        get:
+            tags:
+                - users
+            parameters:
+                -
+                    examples:
+                        Example of ID of a user:
+                            value: '1'
+                    name: id
+                    description: Id of user that has been requested
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                            examples:
+                                Full details of given user:
+                                    value:
+                                        UserID: 1
+                                        FirstName: John
+                                        LastName: Doe
+                                        UserName: johndoe
+                                        Email: john.doe@example.com
+                                        Password: password123
+                                        PlantList:
+                                            - 1
+                                            - 2
+                                            - 3
+                    description: Returns full details of a given id user
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Invalid user id:
+                                    value:
+                                        -
+                                            error: Invalid user id inserted
+                    description: Returns status code 400 to the user if an invaslid if was entered
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                User /w+ was not found:
+                                    value:
+                                        -
+                                            error: User \w+ was not found in user array
+                    description: User was not found in users array
+            operationId: Id
+            summary: Get full details of a user
+            description: Returns full details of a given id user
+        put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
+                        examples:
+                            Example of a user:
+                                value:
+                                    UserID: 2
+                                    FirstName: Jane
+                                    LastName: Smith
+                                    UserName: janesmith
+                                    Email: jane.smith@example.com
+                                    Password: secret123
+                                    PlantList:
+                                        - 2
+            tags:
+                - users
+            parameters:
+                -
+                    examples:
+                        Id of user:
+                            value: '1'
+                    name: id
+                    description: Id of user to be updated
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                            examples:
+                                Example of a modifed user:
+                                    value:
+                                        UserID: 2
+                                        FirstName: Jane
+                                        LastName: Doe
+                                        UserName: janedoe
+                                        Email: jane.doe@example.com
+                                        Password: secret123
+                                        PlantList:
+                                            - 2
+                    description: Returns modified user to the user
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing parameters:
+                                    value:
+                                        -
+                                            error: One or multiple parameters are missing
+                    description: User has not added required parameters ro the modified user
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing User:
+                                    value:
+                                        -
+                                            error: User not found
+                    description: The user to be updated is not found
+            operationId: Id
+            summary: Update a user
+            description: 'Returns updated user, when modification of a user is successful'
+        delete:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: integer
+                        examples:
+                            Id of user to be deleted:
+                                value:
+                                    - 1
+                required: true
+            parameters:
+                -
+                    examples:
+                        Example of an Id of user:
+                            value: '1'
+                    name: id
+                    description: ID of user
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '204':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                successful error:
+                                    value:
+                                        -
+                                            error: No Content
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                User was not found:
+                                    value:
+                                        -
+                                            error: User not found
+                    description: User with this id was not found
+            operationId: Id
+            summary: Delete a user
+            description: Deletes a user from the array based on user id
 components:
     schemas:
         error:
@@ -232,3 +525,48 @@ components:
                 Size: Varies
                 PlantRequirements: Sun
                 PlantInstructions: Forget to water
+        delete:
+            description: Deletes an object
+            required:
+                - delete-plant
+            type: object
+            properties:
+                delete-plant:
+                    description: |-
+                        {
+                            "id" : 1
+                        }
+                    type: string
+        User:
+            description: Example of a submittable user
+            type: object
+            properties:
+                FirstName:
+                    description: ''
+                    type: string
+                LastName:
+                    description: ''
+                    type: string
+                UserName:
+                    description: ''
+                    type: string
+                Email:
+                    description: ''
+                    type: string
+                Password:
+                    description: ''
+                    type: string
+                PlantList:
+                    description: ''
+                    type: array
+                    items:
+                        type: integer
+            example: |-
+                {
+                    FirstName: "Jane",
+                    LastName: "Smith",
+                    UserName: "janesmith",
+                    Email: "jane.smith@example.com",
+                    Password: "secret123",
+                    PlantList: [2]
+                }
