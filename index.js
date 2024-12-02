@@ -177,7 +177,9 @@ app.post('/users', (req, res) => {
 
 //Users Update - As an app developer, I want to be able to UPDATE Users
 app.put('/users/:id', (req, res) => {
-    if (req.params.id == null) {
+    const user = getUser(req, res);
+
+    if(!user) {
         return res.status(404).send({error: "User not found"});  //404 Not Found status code   
     }
     if (!req.body.FirstName || 
@@ -188,15 +190,15 @@ app.put('/users/:id', (req, res) => {
         !req.body.PlantList) {
         return res.send(400).send({error: "One or multiple parameters are missing"});
     }
-    let user = {
-        UserID: req.body.UserID,
-        FirstName: req.body.FirstName,
-        LastName: req.body.LastName,
-        UserName: req.body.UserName,
-        Email: req.body.Email,
-        Password: req.body.Password,
-        PlantList: req.body.PlantList || []
-    }
+    
+        user.UserID = req.body.UserID,
+        user.FirstName = req.body.FirstName,
+        user.LastName = req.body.LastName,
+        user.UserName = req.body.UserName,
+        user.Email = req.body.Email,
+        user.Password = req.body.Password,
+        user.PlantList = req.body.PlantList || []
+    
     plants.splice((req.body.UserID-1), 1, user);
     res.status(201)
         .location('${getBaseURL(req)}/users/${users.length}').send(user);
@@ -235,4 +237,18 @@ function getPlant(req, res) {
         return null;
     }
     return plant;
+}
+
+function getUser(req, res) {
+    const idNumber = parseInt(req.params.UserID, 10);
+    if(isNaN(idNumber)) {
+        res.status(400).send({error: "Invalid user ID provided"});
+        return null;
+    }
+    const user = users.find(p => p.UserID === idNumber);
+    if (!user) {
+        res.status(404).send({error: "User not found"});
+        return null;
+    }
+    return user;
 }
