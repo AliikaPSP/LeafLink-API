@@ -36,6 +36,27 @@ const plants = [
     
 ]
 
+const users = [
+    {
+        UserID : 1,
+        FirstName: "John",
+        LastName: "Doe",
+        UserName: "johndoe",
+        Email: "john.doe@example.com",
+        Password: "password123",
+        PlantList: [1, 2, 3]
+    },
+    {
+        UserID : 2,
+        FirstName: "Jane",
+        LastName: "Smith",
+        UserName: "janesmith",
+        Email: "jane.smith@example.com",
+        Password: "secret123",
+        PlantList: [2]
+    }
+]
+
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use(express.json()); //for parsing application/json
 
@@ -109,7 +130,12 @@ app.delete('/plants/:id', (req, res) => {
     res.status(204).send({error: "No content"}); //204 No Content status code
 })
 
+
+//Users GET
+app.get('/users', (req, res) => {res.send(users)});
+
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
+
 
 function getBaseURL(req) 
 {

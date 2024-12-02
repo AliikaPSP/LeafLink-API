@@ -250,6 +250,17 @@ paths:
             operationId: id
             summary: Delete a Plant
             description: Deletes a plant from the array based on plant id
+    /users:
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                    description: Returns a list of users
+            summary: Get a list of all users from the api
+            description: Returns a list of all users in the API to the requesting user.
 components:
     schemas:
         error:
