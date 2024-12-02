@@ -99,6 +99,16 @@ app.put('/plants/:id', (req, res) => {
 
 })
 
+//Delete a plant
+app.delete('/plants/:id', (req, res) => {
+    if(typeof plants[req.params.id-1] === 'undefined') {
+        return res.status(404).send({error: "Plant not found"});  //404 Not Found status code
+    }
+    plants.splice((req.params.id-1), 1);
+
+    res.status(204).send({error: "No content"}); //204 No Content status code
+})
+
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
 
 function getBaseURL(req) 

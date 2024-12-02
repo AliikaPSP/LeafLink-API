@@ -200,6 +200,56 @@ paths:
             operationId: id
             summary: Update a Plant
             description: 'Returns updated plant, when modification of a plant is successful'
+        delete:
+            requestBody:
+                description: Id of plant that is to be deleted
+                content:
+                    application/json:
+                        schema:
+                            type: integer
+                        examples:
+                            ID of plant to be deleted:
+                                value: '1'
+                required: true
+            tags:
+                - plants
+            parameters:
+                -
+                    examples:
+                        Example of an Id of Plant:
+                            value: '1'
+                    name: id
+                    description: Id of Plant
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '204':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                successful error:
+                                    value:
+                                        -
+                                            error: No content
+                    description: 'Return error, in case deletion was succeful'
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Plant was not found:
+                                    value:
+                                        -
+                                            error: Plant not found
+                    description: Game with this Id was not found
+            operationId: id
+            summary: Delete a Plant
+            description: Deletes a plant from the array based on plant id
 components:
     schemas:
         error:
@@ -232,3 +282,15 @@ components:
                 Size: Varies
                 PlantRequirements: Sun
                 PlantInstructions: Forget to water
+        delete:
+            description: Deletes an object
+            required:
+                - delete-plant
+            type: object
+            properties:
+                delete-plant:
+                    description: |-
+                        {
+                            "id" : 1
+                        }
+                    type: string
