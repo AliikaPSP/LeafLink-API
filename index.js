@@ -96,24 +96,28 @@ app.post('/plants', (req, res) => {
 
 //update a plant
 app.put('/plants/:id', (req, res) => {
-    if (req.params.id == null) {
+    const plant = getPlant(req, res);
+
+    if (!plant) {
         return res.status(404).send({error: "Plant not found"});  //404 Not Found status code   
     }
     if (!req.body.PlantName ||
         !req.body.Description ||
         !req.body.Size ||
         !req.body.PlantRequirements ||
-        !req.body.PlantInstructions) {
+        !req.body.PlantInstructions) 
+        {
         return res.send(400).send({error: "One or multiple parameters are missing"});
-    }
-    let plant = {
-        PlantID: req.body.PlantID,
-        PlantName: req.body.PlantName,
-        Description: req.body.Description,
-        Size: req.body.Size,
-        PlantRequirements: req.body.PlantRequirements,
-        PlantInstructions: req.body.PlantInstructions
-    }
+        }
+
+    
+        plant.PlantID = req.body.PlantID,
+        plant.PlantName = req.body.PlantName,
+        plant.Description = req.body.Description,
+        plant.Size = parseInt(req.body.Size),
+        plant.PlantRequirements = req.body.PlantRequirements,
+        plant.PlantInstructions = req.body.PlantInstructions
+    
     plants.splice((req.body.PlantID-1), 1, plant);
     res.status(201)
         .location('${getBaseURL(req)}/plants/${plants.length}').send(plant);
@@ -207,4 +211,18 @@ function getBaseURL(req)
 {
     return req.connection && req.connection.encrypted ?
     "https" : "http" + `://${req.headers.host}`;
+}
+
+function getPlant(req, res) {
+    const idNumber = parseInt(req.params.PlantID, 10);
+    if(isNaN(idNumber)) {
+        res.status(400).send({error: "Invalid plant ID provided"});
+        return null;
+    }
+    const plant = plants.find(p => p.PlantID === idNumber);
+    if (!plant) {
+        res.status(404).send({error: "Plant not found"});
+        return null;
+    }
+    return plant;
 }
