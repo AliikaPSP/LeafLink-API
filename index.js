@@ -171,6 +171,34 @@ app.post('/users', (req, res) => {
     res.status(201).location(`${getBaseURL(req)}/users/${users.length}`).send(user);
 })
 
+//Users Update - As an app developer, I want to be able to UPDATE Users
+app.put('/users/:id', (req, res) => {
+    if (req.params.id == null) {
+        return res.status(404).send({error: "User not found"});  //404 Not Found status code   
+    }
+    if (!req.body.FirstName || 
+        !req.body.LastName || 
+        !req.body.UserName || 
+        !req.body.Email ||
+        !req.body.Password ||
+        !req.body.PlantList) {
+        return res.send(400).send({error: "One or multiple parameters are missing"});
+    }
+    let user = {
+        UserID: req.body.UserID,
+        FirstName: req.body.FirstName,
+        LastName: req.body.LastName,
+        UserName: req.body.UserName,
+        Email: req.body.Email,
+        Password: req.body.Password,
+        PlantList: req.body.PlantList || []
+    }
+    plants.splice((req.body.UserID-1), 1, user);
+    res.status(201)
+        .location('${getBaseURL(req)}/users/${users.length}').send(user);
+
+})
+
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
 

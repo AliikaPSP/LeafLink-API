@@ -372,6 +372,79 @@ paths:
             operationId: Id
             summary: Get full details of a user
             description: Returns full details of a given id user
+        put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
+                        examples:
+                            Example of a user:
+                                value:
+                                    UserID: 2
+                                    FirstName: Jane
+                                    LastName: Smith
+                                    UserName: janesmith
+                                    Email: jane.smith@example.com
+                                    Password: secret123
+                                    PlantList:
+                                        - 2
+            tags:
+                - users
+            parameters:
+                -
+                    examples:
+                        Id of user:
+                            value: '1'
+                    name: id
+                    description: Id of user to be updated
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                            examples:
+                                Example of a modifed user:
+                                    value:
+                                        UserID: 2
+                                        FirstName: Jane
+                                        LastName: Doe
+                                        UserName: janedoe
+                                        Email: jane.doe@example.com
+                                        Password: secret123
+                                        PlantList:
+                                            - 2
+                    description: Returns modified user to the user
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing parameters:
+                                    value:
+                                        -
+                                            error: One or multiple parameters are missing
+                    description: User has not added required parameters ro the modified user
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing User:
+                                    value:
+                                        -
+                                            error: User not found
+                    description: The user to be updated is not found
+            operationId: Id
+            summary: Update a user
+            description: 'Returns updated user, when modification of a user is successful'
 components:
     schemas:
         error:
