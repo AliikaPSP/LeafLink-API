@@ -99,6 +99,23 @@ app.put('/plants/:id', (req, res) => {
 
 })
 
+//delete a plant
+
+app.delete('/plants/:id', (req, res) => {
+    if (req.params.id == null) {
+        return res.status(404).send({error: "Plant not found"});  //404 Not Found status code   
+    }
+    if (!req.body.PlantName ||
+        !req.body.Description ||
+        !req.body.Size ||
+        !req.body.PlantRequirements ||
+        !req.body.PlantInstructions) {
+        return res.send(400).send({error: "One or multiple parameters are missing"});
+    }
+    plants.splice((req.params.id-1), 1);
+    res.status(204).send(); //204 succesfully deleted
+})
+
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
 
 function getBaseURL(req) 
