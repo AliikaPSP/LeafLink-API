@@ -131,8 +131,23 @@ app.delete('/plants/:id', (req, res) => {
 })
 
 
-//Users GET
+//Users GET - Returns a list of all users in the API to the requesting user.
 app.get('/users', (req, res) => {res.send(users)});
+
+//As an app developer, I want to get full DETAILS of my given User to show in my app
+app.get('/users', (req, res) => {res.send(users)});   
+app.get('/users/:id', (req, res) => {
+    if (typeof users[req.params.id-1]
+         === 'undefined') {
+        return res.status(404).send({error: "User not found"});  //404 Not Found status code   
+    }
+    if (req.params.id == null) {
+        return res.status(400).send({error: "Invalid user ID provided"});  //400 Bad Request status code
+    }
+    res.send(users[req.params.id-1])
+})
+
+
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
 

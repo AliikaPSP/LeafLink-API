@@ -261,6 +261,66 @@ paths:
                     description: Returns a list of users
             summary: Get a list of all users from the api
             description: Returns a list of all users in the API to the requesting user.
+    '/users/{id}':
+        get:
+            tags:
+                - users
+            parameters:
+                -
+                    examples:
+                        Example of ID of a user:
+                            value: '1'
+                    name: id
+                    description: Id of user that has been requested
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                            examples:
+                                Full details of given user:
+                                    value:
+                                        UserID: 1
+                                        FirstName: John
+                                        LastName: Doe
+                                        UserName: johndoe
+                                        Email: john.doe@example.com
+                                        Password: password123
+                                        PlantList:
+                                            - 1
+                                            - 2
+                                            - 3
+                    description: Returns full details of a given id user
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Invalid user id:
+                                    value:
+                                        -
+                                            error: Invalid user id inserted
+                    description: Returns status code 400 to the user if an invaslid if was entered
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                User /w+ was not found:
+                                    value:
+                                        -
+                                            error: User \w+ was not found in user array
+                    description: User was not found in users array
+            operationId: Id
+            summary: Get full details of a user
+            description: Returns full details of a given id user
 components:
     schemas:
         error:
