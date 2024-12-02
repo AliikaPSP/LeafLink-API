@@ -209,7 +209,8 @@ paths:
                             type: integer
                         examples:
                             ID of plant to be deleted:
-                                value: '1'
+                                value:
+                                    - 1
                 required: true
             tags:
                 - plants
@@ -246,7 +247,7 @@ paths:
                                     value:
                                         -
                                             error: Plant not found
-                    description: Game with this Id was not found
+                    description: Plant with this Id was not found
             operationId: id
             summary: Delete a Plant
             description: Deletes a plant from the array based on plant id
@@ -445,6 +446,53 @@ paths:
             operationId: Id
             summary: Update a user
             description: 'Returns updated user, when modification of a user is successful'
+        delete:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: integer
+                        examples:
+                            Id of user to be deleted:
+                                value:
+                                    - 1
+                required: true
+            parameters:
+                -
+                    examples:
+                        Example of an Id of user:
+                            value: '1'
+                    name: id
+                    description: ID of user
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '204':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                successful error:
+                                    value:
+                                        -
+                                            error: No Content
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                User was not found:
+                                    value:
+                                        -
+                                            error: User not found
+                    description: User with this id was not found
+            operationId: Id
+            summary: Delete a user
+            description: Deletes a user from the array based on user id
 components:
     schemas:
         error:

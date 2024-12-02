@@ -203,6 +203,16 @@ app.put('/users/:id', (req, res) => {
 
 })
 
+//Users DELETE - As an app developer, I want to be able to DELETE an User in my app
+app.delete('/users/:id', (req, res) => {
+    if(typeof users[req.params.id-1] === 'undefined') {
+        return res.status(404).send({error: "User not found"});  //404 Not Found status code
+    }
+    users.splice((req.params.id-1), 1);
+
+    res.status(204).send({error: "No content"}); //204 No Content status code
+})
+
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
 
