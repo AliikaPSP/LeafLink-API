@@ -240,6 +240,21 @@ app.get('/plantlists/:id', (req, res) => {
     }
     res.send(plantlists[req.params.id-1])
 })
+//plantlists CREATE - As an app developer, I want to be able to ADD a new Plantlist in my app
+app.post('/plantlists', (req, res) => {
+    if (!req.body.PlantID || 
+        !req.body.UserID ) {
+        return res.send(400).send({error: "One or multiple parameters are missing"});
+    }
+    
+    let plantlist = {
+        PlantListID: plantlists.length + 1,
+        PlantID: req.body.PlantID,
+        UserID: req.body.UserID
+    }
+    plantlists.push(plantlist);
+    res.status(201).location('${getBaseURL(req)}/plantlists/${plantlists.length}').send(plantlist);
+})
 
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    

@@ -47,16 +47,13 @@ paths:
                                     type: string
                             examples:
                                 Plant that is added:
-                                    value: |-
-                                        Aliika Puusepp
-                                        {
-                                            "PlantID": 4,
-                                            "PlantName": "Cactus",
-                                            "Description": "Pointy beautiful cactus",
-                                            "Size": "Varies",
-                                            "PlantRequirements": "Sun",
-                                            "PlantInstructions": "Forget to water"
-                                        }
+                                    value:
+                                        PlantID: 4
+                                        PlantName: Cactus
+                                        Description: Pointy beautiful cactus
+                                        Size: Varies
+                                        PlantRequirements: Sun
+                                        PlantInstructions: Forget to water
                     description: 'Return code 201 to user, if creation of new plant was successful'
                 '400':
                     content:
@@ -253,6 +250,8 @@ paths:
             description: Deletes a plant from the array based on plant id
     /users:
         get:
+            tags:
+                - users
             responses:
                 '200':
                     content:
@@ -279,6 +278,8 @@ paths:
                                     PlantList:
                                         - 2
                 required: true
+            tags:
+                - users
             responses:
                 '201':
                     content:
@@ -457,6 +458,8 @@ paths:
                                 value:
                                     - 1
                 required: true
+            tags:
+                - users
             parameters:
                 -
                     examples:
@@ -496,7 +499,7 @@ paths:
     /plantlists:
         get:
             tags:
-                - plants
+                - plantlists
             responses:
                 '200':
                     content:
@@ -508,10 +511,48 @@ paths:
                     description: 'Return status code 200 to the user, with list of Plant lists'
             summary: get a list of all plantlists from the api
             description: Returns a list of all plantlists in the API to the requesting user.
+        post:
+            requestBody:
+                description: Data of plantlist the user wants to add
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Plantlists'
+                        examples:
+                            Example of a plantlist:
+                                value: "    {\r\n        \"UserID\": [1],\r\n        \"PlantID\": [1]\r\n    }"
+                required: true
+            tags:
+                - plantlists
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                Plantlist that is added:
+                                    value: "    {\r\n        \"PlantListID\" : 1,\r\n        \"UserID\": [1],\r\n        \"PlantID\": [1]\r\n    }"
+                    description: 'Return code 201 to user, if creation of a new plantlist was successful'
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing parameters:
+                                    value:
+                                        -
+                                            error: One or multiple parameters are missing
+                    description: 'Returns status code 400, if one or multiple parameters are missing'
+            summary: add a new plantlist
+            description: Adds a new plantlist into the array
     '/plantlists/{id}':
         get:
             tags:
-                - plants
+                - plantlists
             parameters:
                 -
                     examples:
@@ -637,3 +678,20 @@ components:
                     Password: "secret123",
                     PlantList: [2]
                 }
+        Plantlists:
+            description: Example of a submittable plantlist
+            type: object
+            properties:
+                PlantID:
+                    description: ''
+                    type: array
+                    items: {}
+                UserID:
+                    description: ''
+                    type: array
+                    items: {}
+            example:
+                UserID:
+                    - 1
+                PlantID:
+                    - 1
