@@ -493,6 +493,22 @@ paths:
             operationId: Id
             summary: Delete a user
             description: Deletes a user from the array based on user id
+    /plantlist:
+        get:
+            tags:
+                - plants
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                    description: 'Return status code 200 to the user, with list of Plant lists'
+            summary: get a list of all plantlists from the api
+            description: Returns a list of all plantlists in the API to the requesting user.
+    '/plantlist/{id}': {}
 components:
     schemas:
         error:

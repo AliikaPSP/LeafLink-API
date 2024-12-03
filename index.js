@@ -57,6 +57,19 @@ const users = [
     }
 ]
 
+const plantlist = [
+    {
+        PlantListID : 1,
+        UserID: [1],
+        PlantID: [1]
+    },
+    {
+        PlantListID : 2,
+        UserID: [2],
+        PlantID: [3]
+    }
+]
+
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use(express.json()); //for parsing application/json
 
@@ -214,6 +227,8 @@ app.delete('/users/:id', (req, res) => {
 
     res.status(204).send({error: "No content"}); //204 No Content status code
 })
+//plantlists GET - Returns a list of all plantlists in the API to the requesting user.
+app.get('/plantlist', (req, res) => {res.send(plantlist)});
 
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
