@@ -277,6 +277,17 @@ app.put('/plantlists/:id', (req, res) => {
 
 })
 
+//plantlist DELETE - As an app developer, I want to be able to DELETE a plantlist in my app
+app.delete('/plantlists/:id', (req, res) => {
+    if(typeof plantlists[req.params.id-1] === 'undefined') {
+        return res.status(404).send({error: "Plantlist not found"});  //404 Not Found status code
+    }
+    plantlists.splice((req.params.id-1), 1);
+
+    res.status(204).send({error: "No content"}); //204 No Content status code
+})
+
+
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
 

@@ -661,6 +661,57 @@ paths:
             operationId: Id
             summary: Update a plantlist
             description: 'Returns updated plantlist, when modification of one is successful'
+        delete:
+            requestBody:
+                description: Id of a plantlist that is to be deleted
+                content:
+                    application/json:
+                        schema:
+                            type: integer
+                        examples:
+                            Id of a plantlist to be deleted:
+                                value:
+                                    - 1
+                required: true
+            tags:
+                - plantlists
+            parameters:
+                -
+                    examples:
+                        Example id of a plantlist:
+                            value: '1'
+                    name: id
+                    description: Id of Plantlist
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '204':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                successful error:
+                                    value:
+                                        -
+                                            error: No content
+                    description: 'Return error, in case deletion was successful'
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Plantlist was not found:
+                                    value:
+                                        -
+                                            error: Plant not found
+                    description: Plantlist with this id was not found
+            operationId: id
+            summary: Delete a plantlist
+            description: Deletes a plantlist from the array based on the plantlist id
 components:
     schemas:
         error:
