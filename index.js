@@ -57,7 +57,7 @@ const users = [
     }
 ]
 
-const plantlist = [
+const plantlists = [
     {
         PlantListID : 1,
         UserID: [1],
@@ -228,7 +228,18 @@ app.delete('/users/:id', (req, res) => {
     res.status(204).send({error: "No content"}); //204 No Content status code
 })
 //plantlists GET - Returns a list of all plantlists in the API to the requesting user.
-app.get('/plantlist', (req, res) => {res.send(plantlist)});
+app.get('/plantlists', (req, res) => {res.send(plantlists)});
+//plantlists DETAILS : As an app developer, I want to get full DETAILS of my given plantlist to show in my app 
+app.get('/plantlists/:id', (req, res) => {
+    if (typeof plantlists[req.params.id-1]
+         === 'undefined') {
+        return res.status(404).send({error: "Plantlist not found"});  //404 Not Found status code   
+    }
+    if (req.params.id == null) {
+        return res.status(400).send({error: "Invalid plantlist ID provided"});  //400 Bad Request status code
+    }
+    res.send(plantlists[req.params.id-1])
+})
 
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    

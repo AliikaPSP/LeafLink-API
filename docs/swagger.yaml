@@ -493,7 +493,7 @@ paths:
             operationId: Id
             summary: Delete a user
             description: Deletes a user from the array based on user id
-    /plantlist:
+    /plantlists:
         get:
             tags:
                 - plants
@@ -508,7 +508,58 @@ paths:
                     description: 'Return status code 200 to the user, with list of Plant lists'
             summary: get a list of all plantlists from the api
             description: Returns a list of all plantlists in the API to the requesting user.
-    '/plantlist/{id}': {}
+    '/plantlists/{id}':
+        get:
+            tags:
+                - plants
+            parameters:
+                -
+                    examples:
+                        Example id of a plantlist:
+                            value: '1'
+                    name: id
+                    description: Id of plantlist the user has requested
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                Full details of a given plantlist:
+                                    value: "    {\r\n        \"PlantListID\" : 1,\r\n        \"UserID\": [1],\r\n        \"PlantID\": [1]\r\n    }"
+                    description: Returns full details of a given plantlist id
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                invalid plantlist id:
+                                    value:
+                                        -
+                                            error: invalid id inserted
+                    description: Return status code 400 to the user if an invalid id was entered
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Plantlist /w+ was not found:
+                                    value:
+                                        -
+                                            error: Plantlist \w+ was not found in plantlist array
+                    description: Plantlist was not found in plantlist array
+            operationId: id
+            summary: Get full details of a plantlist
+            description: Returns full details of a given plantlist id
 components:
     schemas:
         error:
