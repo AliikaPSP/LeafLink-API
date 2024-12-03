@@ -601,6 +601,66 @@ paths:
             operationId: id
             summary: Get full details of a plantlist
             description: Returns full details of a given plantlist id
+        put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Plantlists'
+                        examples:
+                            Example of a plantlist:
+                                value: "    {\r\n        \"PlantListID\" : 1,\r\n        \"UserID\": [1],\r\n        \"PlantID\": [1]\r\n    }"
+                required: false
+            tags:
+                - plantlists
+            parameters:
+                -
+                    examples:
+                        Id of plantlist:
+                            value: '1'
+                    name: id
+                    description: Id of plantlist
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                Example of a modified plantlist:
+                                    value: "    {\r\n        \"PlantListID\" : 1,\r\n        \"UserID\": [1],\r\n        \"PlantID\": [1]\r\n    }"
+                    description: Returns modified Plantlist to the user
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing parameters:
+                                    value:
+                                        -
+                                            error: One or multiple parameters are missing
+                    description: User has not added the required parameters to the modified Plantlist
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Missing Plantlist:
+                                    value:
+                                        -
+                                            error: Plantlist not found
+                    description: The plantlist to be updated has not been found
+            operationId: Id
+            summary: Update a plantlist
+            description: 'Returns updated plantlist, when modification of one is successful'
 components:
     schemas:
         error:

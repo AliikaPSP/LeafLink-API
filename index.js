@@ -212,7 +212,7 @@ app.put('/users/:id', (req, res) => {
         user.Password = req.body.Password,
         user.PlantList = req.body.PlantList || []
     
-    plants.splice((req.body.UserID-1), 1, user);
+    users.splice((req.body.UserID-1), 1, user);
     res.status(201)
         .location('${getBaseURL(req)}/users/${users.length}').send(user);
 
@@ -256,6 +256,27 @@ app.post('/plantlists', (req, res) => {
     res.status(201).location('${getBaseURL(req)}/plantlists/${plantlists.length}').send(plantlist);
 })
 
+//plantlist Update - As an app developer, I want to be able to UPDATE Plantlists
+app.put('/plantlists/:id', (req, res) => {
+    const plantlist = getPlantlist(req, res);
+
+    if(!plantlist) {
+        return res.status(404).send({error: "Plantlist not found"});  //404 Not Found status code   
+    }
+    if (!req.body.PlantID || 
+        !req.body.UserID ) {
+        return res.send(400).send({error: "One or multiple parameters are missing"});
+    }
+        plantlist.PlantListID = req.body.PlantListID,
+        plantlist.UserID = req.body.UserID,
+        plantlist.PlantID = req.body.PlantID
+    
+    plantlists.splice((req.body.PlantListID-1), 1, plantlist);
+    res.status(201)
+        .location('${getBaseURL(req)}/plantlists/${plantlists.length}').send(plantlist);
+
+})
+
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
 
@@ -292,4 +313,17 @@ function getUser(req, res) {
         return null;
     }
     return user;
+}
+function getPlantlist(req, res) {
+    const idNumber = parseInt(req.params.PlantListID, 10);
+    if(isNaN(idNumber)) {
+        res.status(400).send({error: "Invalid plantlist ID provided"});
+        return null;
+    }
+    const plantlist = plantlists.find(p => p.PlantListID === idNumber);
+    if (!plantlist) {
+        res.status(404).send({error: "Plantlist not found"});
+        return null;
+    }
+    return plantlist;
 }
