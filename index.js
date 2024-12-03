@@ -265,15 +265,16 @@ app.put('/plantlists/:id', (req, res) => {
     }
     if (!req.body.PlantID || 
         !req.body.UserID ) {
-        return res.send(400).send({error: "One or multiple parameters are missing"});
+        return res.status(400).send({error: "One or multiple parameters are missing"});
     }
         plantlist.PlantListID = req.body.PlantListID,
         plantlist.UserID = req.body.UserID,
         plantlist.PlantID = req.body.PlantID
     
     plantlists.splice((req.body.PlantListID-1), 1, plantlist);
-    res.status(201)
-        .location('${getBaseURL(req)}/plantlists/${plantlists.length}').send(plantlist);
+        res.status(201)
+        .location(`${getBaseURL(req)}/plantlists/${req.params.id}`)
+        .send(plantlist);
 
 })
 
@@ -299,7 +300,7 @@ function getBaseURL(req)
 }
 
 function getPlant(req, res) {
-    const idNumber = parseInt(req.params.PlantID, 10);
+    const idNumber = parseInt(req.params.id, 10);
     if(isNaN(idNumber)) {
         res.status(400).send({error: "Invalid plant ID provided"});
         return null;
@@ -313,7 +314,7 @@ function getPlant(req, res) {
 }
 
 function getUser(req, res) {
-    const idNumber = parseInt(req.params.UserID, 10);
+    const idNumber = parseInt(req.params.id, 10);
     if(isNaN(idNumber)) {
         res.status(400).send({error: "Invalid user ID provided"});
         return null;
@@ -326,7 +327,7 @@ function getUser(req, res) {
     return user;
 }
 function getPlantlist(req, res) {
-    const idNumber = parseInt(req.params.PlantListID, 10);
+    const idNumber = parseInt(req.params.id, 10);
     if(isNaN(idNumber)) {
         res.status(400).send({error: "Invalid plantlist ID provided"});
         return null;
