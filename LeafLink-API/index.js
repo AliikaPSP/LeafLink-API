@@ -1,40 +1,43 @@
-const port = 8080;
-const app = require('express')();
+require('dotenv').config();
+
+const port = process.env.PORT || 8080;
+const host = 'localhost';
+const express = require('express');
+const app = express();
 //npm install swagger-ui-express 
 const swaggerUI = require
 ('swagger-ui-express');
 const yamljs = require('yamljs');
 const swaggerDoc = yamljs.load('./docs/swagger.yaml');
-var express = require('express');
 
-const plants = [
+// const plants = [
 
-    {
-        PlantID: 1, 
-        PlantName: "Rose", 
-        Description: "This is a beautiful rose plant.", 
-        Size: "Medium", 
-        PlantRequirements: "Water, Soil, Light", 
-        PlantInstructions:"Water 5-6 times a week, Light: indirect"
-    },
-    {
-        PlantID: 2, 
-        PlantName: "Lily", 
-        Description: "This is a beautiful lily plant.", 
-        Size: "Large",  
-        PlantRequirements: "Water, Light", 
-        PlantInstructions:"A body of water. Light: indirect"
-    },
-    {
-        PlantID: 3, 
-        PlantName: "Tulips", 
-        Description: "This is a beautiful tulip plant.", 
-        Size: "Small",  
-        PlantRequirements: "Water, Soil, Light", 
-        PlantInstructions:"Water 2 times a week. Light: indirect"
-    }
+//     {
+//         PlantID: 1, 
+//         PlantName: "Rose",
+//         Description: "This is a beautiful rose plant.", 
+//         Size: "Medium", 
+//         PlantRequirements: "Water, Soil, Light", 
+//         PlantInstructions:"Water 5-6 times a week, Light: indirect"
+//     },
+//     {
+//         PlantID: 2, 
+//         PlantName: "Lily", 
+//         Description: "This is a beautiful lily plant.", 
+//         Size: "Large",  
+//         PlantRequirements: "Water, Light", 
+//         PlantInstructions:"A body of water. Light: indirect"
+//     },
+//     {
+//         PlantID: 3, 
+//         PlantName: "Tulips", 
+//         Description: "This is a beautiful tulip plant.", 
+//         Size: "Small",  
+//         PlantRequirements: "Water, Soil, Light", 
+//         PlantInstructions:"Water 2 times a week. Light: indirect"
+//     }
     
-]
+// ]
 
 const users = [
     {
@@ -73,20 +76,18 @@ const plantlists = [
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use(express.json()); //for parsing application/json
 
-app.get('/plants', (req, res) => {res.send(plants)});   
-app.get('/plants/:id', (req, res) => {
-    if (typeof plants[req.params.id-1]
-         === 'undefined') {
-        return res.status(404).send({error: "Plant not found"});  //404 Not Found status code   
-    }
-    if (req.params.id == null) {
-        return res.status(400).send({error: "Invalid plant ID provided"});  //400 Bad Request status code
-    }
-    res.send(plants[req.params.id-1])
+app.get('/plants', async (req, res) => {
+    const plants = await db.plants.findAll();
+    res.send(plants.map(({id, name}) => {return {id, name}}));
+})   
+app.get('/plants/:id', async (req, res) => {
+    const plant = await getPlant(req, res);
+    if (!plant) { return };
+    return res.send(plant);
 })
 
 //create
-app.post('/plants', (req, res) => {
+app.post('/plants', async (req, res) => {
     if (!req.body.PlantName || 
         !req.body.Description || 
         !req.body.Size || 
@@ -95,16 +96,17 @@ app.post('/plants', (req, res) => {
         return res.send(400).send({error: "One or multiple parameters are missing"});
     }
     
-    let plant = {
-        PlantID: plants.length + 1,
+    let newPlant = {
         PlantName: req.body.PlantName,
         Description: req.body.Description,
         Size: req.body.Size,
         PlantRequirements: req.body.PlantRequirements,
         PlantInstructions: req.body.PlantInstructions
     }
-    plants.push(plant);
-    res.status(201).location('${getBaseURL(req)}/plants/${plants.length}').send(plant);
+    const createdPlant = await db_plants.create(newPlant);
+    res.status(201)
+    .location('${getBaseURL(req)}/plants/${createdPlant.PlantID}')
+    .send(createdPlant.PlantID);
 })
 
 //update a plant
@@ -338,4 +340,19 @@ function getPlantlist(req, res) {
         return null;
     }
     return plantlist;
+}
+
+async function getPlant(req, res) {
+    const idNumber = parseInt(req.params.PlantID);
+
+   if (isNaN(idNumber)) {
+       return res.status(400).send({error: "Invalid plant ID provided"});
+       return null;  //400 Bad Request status code
+   }    
+   const plant = await db.plants.findByPk(idNumber);
+   if (!plant) {
+       res.status(404).send({error: "Plant not found"});
+       return null;  //404 Not Found status code   
+   }
+   return plant;
 }
