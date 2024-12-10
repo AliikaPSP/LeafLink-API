@@ -20,7 +20,7 @@ db.sequelize = sequelize;
 db.plants = require("./Models/Plant")(sequelize, DataTypes);
 
 const sync = (async () => { 
-    await sequelize.sync({ alert : true});
+    await sequelize.sync({ alter : true});
     console.log("Models have been synchronized successfully.")
 })
 
