@@ -4,7 +4,7 @@
   "description": "Plants api for registering plants, which users may own.\r -----------------------------------------------------\r Please see below for instructions on how to run, and where its api and trello team resources are.\r How to run:\r - Open terminal in backend folder.\r - Use nodemon . to run backend.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "",
     "start": "concurrently \"cd leaflink-API && nodemon .\" \"cd Frontend\\frontend && npm run dev\""
   },
@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "cors": "^2.8.5"
   }
 }

@@ -4,6 +4,7 @@ const port = process.env.PORT || 8080;
 const host = 'localhost';
 const express = require('express');
 const app = express();
+const cors = require('cors');
 //npm install swagger-ui-express 
 const swaggerUI = require
 ('swagger-ui-express');
@@ -73,82 +74,9 @@ const plantlists = [
     }
 ]
 
+app.use(cors());
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use(express.json()); //for parsing application/json
-
-app.get('/plants', async (req, res) => {
-    const plants = await db.plants.findAll();
-    res.send(plants.map(({id, name}) => {return {id, name}}));
-})   
-app.get('/plants/:id', async (req, res) => {
-    const plant = await getPlant(req, res);
-    if (!plant) { return };
-    return res.send(plant);
-})
-
-//create
-app.post('/plants', async (req, res) => {
-    if (!req.body.PlantName || 
-        !req.body.Description || 
-        !req.body.Size || 
-        !req.body.PlantRequirements ||
-        !req.body.PlantInstructions) {
-        return res.send(400).send({error: "One or multiple parameters are missing"});
-    }
-    
-    let newPlant = {
-        PlantName: req.body.PlantName,
-        Description: req.body.Description,
-        Size: req.body.Size,
-        PlantRequirements: req.body.PlantRequirements,
-        PlantInstructions: req.body.PlantInstructions
-    }
-    const createdPlant = await db_plants.create(newPlant);
-    res.status(201)
-    .location('${getBaseURL(req)}/plants/${createdPlant.PlantID}')
-    .send(createdPlant.PlantID);
-})
-
-//update a plant
-app.put('/plants/:id', (req, res) => {
-    const plant = getPlant(req, res);
-
-    if (!plant) {
-        return res.status(404).send({error: "Plant not found"});  //404 Not Found status code   
-    }
-    if (!req.body.PlantName ||
-        !req.body.Description ||
-        !req.body.Size ||
-        !req.body.PlantRequirements ||
-        !req.body.PlantInstructions) 
-        {
-        return res.send(400).send({error: "One or multiple parameters are missing"});
-        }
-
-    
-        plant.PlantID = req.body.PlantID,
-        plant.PlantName = req.body.PlantName,
-        plant.Description = req.body.Description,
-        plant.Size = parseInt(req.body.Size),
-        plant.PlantRequirements = req.body.PlantRequirements,
-        plant.PlantInstructions = req.body.PlantInstructions
-    
-    plants.splice((req.body.PlantID-1), 1, plant);
-    res.status(201)
-        .location('${getBaseURL(req)}/plants/${plants.length}').send(plant);
-
-})
-
-//Delete a plant
-app.delete('/plants/:id', (req, res) => {
-    if(typeof plants[req.params.id-1] === 'undefined') {
-        return res.status(404).send({error: "Plant not found"});  //404 Not Found status code
-    }
-    plants.splice((req.params.id-1), 1);
-
-    res.status(204).send({error: "No content"}); //204 No Content status code
-})
-
 
 //Users GET - Returns a list of all users in the API to the requesting user.
 app.get('/users', (req, res) => {res.send(users)});
@@ -294,26 +222,6 @@ app.delete('/plantlists/:id', (req, res) => {
 
 app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
 
-
-function getBaseURL(req) 
-{
-    return req.connection && req.connection.encrypted ?
-    "https" : "http" + `://${req.headers.host}`;
-}
-
-function getPlant(req, res) {
-    const idNumber = parseInt(req.params.id, 10);
-    if(isNaN(idNumber)) {
-        res.status(400).send({error: "Invalid plant ID provided"});
-        return null;
-    }
-    const plant = plants.find(p => p.PlantID === idNumber);
-    if (!plant) {
-        res.status(404).send({error: "Plant not found"});
-        return null;
-    }
-    return plant;
-}
 
 function getUser(req, res) {
     const idNumber = parseInt(req.params.id, 10);
