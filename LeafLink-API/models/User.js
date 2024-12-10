@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             PlantList: {
-                type: DataTypes.ARRAY(DataTypes.INTEGER),
+                type: DataTypes.JSON,
                 defaultValue: [],
             }
         },

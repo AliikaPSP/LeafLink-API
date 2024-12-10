@@ -11,6 +11,8 @@ const swaggerUI = require
 const yamljs = require('yamljs');
 const swaggerDoc = yamljs.load('./docs/swagger.yaml');
 
+const {sync} = require('./db');
+
 // const plants = [
 
 //     {
@@ -40,26 +42,26 @@ const swaggerDoc = yamljs.load('./docs/swagger.yaml');
     
 // ]
 
-const users = [
-    {
-        UserID : 1,
-        FirstName: "John",
-        LastName: "Doe",
-        UserName: "johndoe",
-        Email: "john.doe@example.com",
-        Password: "password123",
-        PlantList: [1, 2, 3]
-    },
-    {
-        UserID : 2,
-        FirstName: "Jane",
-        LastName: "Smith",
-        UserName: "janesmith",
-        Email: "jane.smith@example.com",
-        Password: "secret123",
-        PlantList: [2]
-    }
-]
+// const users = [
+//     {
+//         UserID : 1,
+//         FirstName: "John",
+//         LastName: "Doe",
+//         UserName: "johndoe",
+//         Email: "john.doe@example.com",
+//         Password: "password123",
+//         PlantList: [1, 2, 3]
+//     },
+//     {
+//         UserID : 2,
+//         FirstName: "Jane",
+//         LastName: "Smith",
+//         UserName: "janesmith",
+//         Email: "jane.smith@example.com",
+//         Password: "secret123",
+//         PlantList: [2]
+//     }
+// ]
 
 const plantlists = [
     {
@@ -78,6 +80,11 @@ app.use(cors());
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use(express.json()); //for parsing application/json
 
+app.get('/', (req, res) => {
+    res.send(`Server running. Documentation at <a href="http://${host}:${port}/docs">/docs</a>`);
+})
+
+require("./routes/plantRoutes")(app);
 
 //plantlists GET - Returns a list of all plantlists in the API to the requesting user.
 app.get('/plantlists', (req, res) => {res.send(plantlists)});
@@ -142,22 +149,14 @@ app.delete('/plantlists/:id', (req, res) => {
 
 
 
-app.listen(port, () => {console.log(`Api on saadaval aadressil: http://localhost:${port} `);});    
+app.listen(port, async() => {
+    if (process.env.SYNC === 'true') {
+        await sync();
+    }
+    console.log(`Api on saadaval aadressil: http://${host}:${port}`);
+});    
 
 
-function getUser(req, res) {
-    const idNumber = parseInt(req.params.id, 10);
-    if(isNaN(idNumber)) {
-        res.status(400).send({error: "Invalid user ID provided"});
-        return null;
-    }
-    const user = users.find(p => p.UserID === idNumber);
-    if (!user) {
-        res.status(404).send({error: "User not found"});
-        return null;
-    }
-    return user;
-}
 function getPlantlist(req, res) {
     const idNumber = parseInt(req.params.id, 10);
     if(isNaN(idNumber)) {
@@ -170,19 +169,4 @@ function getPlantlist(req, res) {
         return null;
     }
     return plantlist;
-}
-
-async function getPlant(req, res) {
-    const idNumber = parseInt(req.params.PlantID);
-
-   if (isNaN(idNumber)) {
-       return res.status(400).send({error: "Invalid plant ID provided"});
-       return null;  //400 Bad Request status code
-   }    
-   const plant = await db.plants.findByPk(idNumber);
-   if (!plant) {
-       res.status(404).send({error: "Plant not found"});
-       return null;  //404 Not Found status code   
-   }
-   return plant;
 }

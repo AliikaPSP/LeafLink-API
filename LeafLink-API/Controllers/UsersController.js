@@ -1,5 +1,5 @@
 const {db} = require("../db");
-const Utils = require("../utils");
+const Utils = require("./utils");
 
 exports.getAll = async (req, res) => {
     const users = await db.users.findAll();
@@ -42,8 +42,8 @@ exports.editById = async (req, res) => {
         !req.body.LastName ||
         !req.body.UserName ||
         !req.body.Email ||
-        !req.body.Password||
-        !req.body.PlantList ||) 
+        !req.body.Password ||
+        !req.body.PlantList) 
     {return res.send(400).send({error: "One or multiple parameters are missing"}); }
     user.FirstName = req.body.FirstName,
     user.LastName = req.body.LastName,
