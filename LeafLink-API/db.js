@@ -17,7 +17,8 @@ const Sequelize = new Sequelize(process.env.DB_DATANAME, process.env.DB_USERNAME
 const db = {}
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.plants = require("./Models/Plant")(sequelize, DataTypes);
+db.plants = require("./models/Plant")(sequelize, DataTypes);
+db.users = require("./models/User")(sequelize, DataTypes);
 
 const sync = (async () => { 
     await sequelize.sync({ alter : true});
