@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const PlantList = sequelize.define(
-        'PlantList',
+    const Plantlist = sequelize.define(
+        'Plantlist',
         {
             PlantListID: {
                 type: DataTypes.INTEGER,
@@ -27,6 +27,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
 
-    console.log(PlantList === sequelize.models.PlantList);
-    return PlantList;
+    console.log(Plantlist === sequelize.models.Plantlist);
+    return Plantlist;
 }
