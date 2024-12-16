@@ -85,6 +85,8 @@ app.get('/', (req, res) => {
 })
 
 require("./routes/plantRoutes")(app);
+require("./routes/userRoutes")(app);
+require("./routes/plantlistRoute")(app);
 
 // //plantlists GET - Returns a list of all plantlists in the API to the requesting user.
 // app.get('/plantlists', (req, res) => {res.send(plantlists)});

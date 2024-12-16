@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
             UserName: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                unique: true,
+                unique: 'compositeIndex',
             },
             Email: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                unique: true,
+                unique: 'compositeIndex',
             },
             Password: {
                 type: DataTypes.STRING,

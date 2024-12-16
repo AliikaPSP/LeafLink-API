@@ -1,7 +1,7 @@
 <script>
 import PlantsTable from '../components/PlantsTable.vue'
 import UsersTable from '../components/UsersTable.vue'
-import PlantListsTable from '@/components/PlantListsTable.vue';
+import PlantListsTable from '../components/PlantListsTable.vue';
 
 export default {
   components: { PlantsTable, UsersTable, PlantListsTable },

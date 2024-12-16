@@ -4,7 +4,7 @@ const Utils = require("./utils");
 exports.getAll = async (req, res) => {
     const plantlists = await db.plantlists.findAll();
     console.log(plantlists);
-    res.send(plantlists.map(({ id, name }) => { return { id, name } }));
+    res.send(plantlists.map(({ PlantListID, UserID, PlantID }) => { return { PlantListID, UserID, PlantID } }));
 }
 
 exports.getById = async (req, res) => {
