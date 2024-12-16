@@ -30,9 +30,12 @@ exports.create = async (req, res) => {
         PlantInstructions: req.body.PlantInstructions
     }
     const createdPlant = await db.plants.create(newPlant);
-    res.status(201)
-        .location(`${Utils.getBaseURL(req)}/plants/${createdPlant.PlantID}`)
-        .send(createdPlant.PlantID);
+    // res.status(201)
+    //     .location(`${Utils.getBaseURL(req)}/plants/${createdPlant.PlantID}`)
+    //     .send(createdPlant.PlantID);
+    res
+    .location(`${Utils.getBaseUrl(req)}/plants/${createdPlant.PlantID}`)
+    .sendStatus(201);
 }
 
 exports.editById = async (req, res) => {
@@ -51,7 +54,7 @@ exports.editById = async (req, res) => {
     plant.PlantInstructions = req.body.PlantInstructions
     await plant.save();
     return res.status(201)
-        .location(`${Utils.getBaseURL(req)}/plants/${plant.PlantID}`)
+        .location(`${Utils.getBaseUrl(req)}/plants/${plant.PlantID}`)
         .send(plant);
 }
 

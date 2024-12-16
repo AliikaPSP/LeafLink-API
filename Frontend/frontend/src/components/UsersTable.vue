@@ -23,3 +23,6 @@ export default {
         </tbody>
     </table>
 </template>
+
+<style scoped>
+</style>
