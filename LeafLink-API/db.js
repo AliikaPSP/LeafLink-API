@@ -19,6 +19,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.plants = require("./models/Plant")(sequelize, DataTypes);
 db.users = require("./models/User")(sequelize, DataTypes);
+db.plantlists = require("./models/PlantList")(sequelize, DataTypes);
 
 const sync = (async () => { 
     await sequelize.sync({ alter : true});
