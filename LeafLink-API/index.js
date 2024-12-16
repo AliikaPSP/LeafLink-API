@@ -76,15 +76,15 @@ const {sync} = require('./db');
 //     }
 // ]
 
-// app.use(cors());
-// app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
-// app.use(express.json()); //for parsing application/json
+app.use(cors());
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+app.use(express.json()); //for parsing application/json
 
-// app.get('/', (req, res) => {
-//     res.send(`Server running. Documentation at <a href="http://${host}:${port}/docs">/docs</a>`);
-// })
+app.get('/', (req, res) => {
+    res.send(`Server running. Documentation at <a href="http://${host}:${port}/docs">/docs</a>`);
+})
 
-// require("./routes/plantRoutes")(app);
+require("./routes/plantRoutes")(app);
 
 // //plantlists GET - Returns a list of all plantlists in the API to the requesting user.
 // app.get('/plantlists', (req, res) => {res.send(plantlists)});
@@ -149,12 +149,12 @@ const {sync} = require('./db');
 
 
 
-// app.listen(port, async() => {
-//     if (process.env.SYNC === 'true') {
-//         await sync();
-//     }
-//     console.log(`Api on saadaval aadressil: http://${host}:${port}`);
-// });    
+app.listen(port, async() => {
+    if (process.env.SYNC === 'true') {
+        await sync();
+    }
+    console.log(`Api on saadaval aadressil: http://${host}:${port}`);
+});    
 
 
 // function getPlantlist(req, res) {
