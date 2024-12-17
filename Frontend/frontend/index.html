@@ -8,7 +8,24 @@
     <title>Vite App</title>
   </head>
   <body>
+    <body class="bg-custom">
+      <div id="app"></div>
+    </body>
+
+    <style>
+      .bg-custom {
+      background-color: #e6e4d7; /* Your preferred color */
+    }
+    </style>
     <div id="app"></div>
+    <script setup lang="ts">
+      import {
+        MDBFooter,
+        MDBContainer,
+        MDBRow,
+        MDBCol,
+      } from 'mdb-vue-ui-kit';
+    </script>
     <script type="module" src="/src/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
   </body>
