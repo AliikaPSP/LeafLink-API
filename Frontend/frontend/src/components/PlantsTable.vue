@@ -9,6 +9,9 @@ export default {
       // Log the ID to verify it's being passed correctly
       console.log(id);
       this.$router.push({ name: 'plantDetails', params: { id } });
+    },
+    goToUpdate(id) {
+      this.$router.push({ name: 'plantUpdate', params: { id } });
     }
   }
 }
@@ -29,6 +32,7 @@ export default {
         <td>{{ item.PlantName }}</td>
         <td>
           <button @click="goToDetails(item.PlantID)">Details</button>
+          <button @click="goToUpdate(item.PlantID)">Update</button>
         </td>
       </tr>
     </tbody>

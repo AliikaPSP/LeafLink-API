@@ -49,13 +49,11 @@ exports.editById = async (req, res) => {
     {return res.send(400).send({error: "One or multiple parameters are missing"}); }
     plant.PlantName = req.body.PlantName,
     plant.Description = req.body.Description,
-    plant.Size = parseInt(req.body.Size),
+    plant.Size = req.body.Size,
     plant.PlantRequirements = req.body.PlantRequirements,
     plant.PlantInstructions = req.body.PlantInstructions
     await plant.save();
-    return res.status(201)
-        .location(`${Utils.getBaseUrl(req)}/plants/${plant.PlantID}`)
-        .send(plant);
+    return res.status(201).send(plant);
 }
 
 exports.deleteById = async (req, res) => {
