@@ -68,7 +68,7 @@ exports.deleteById = async (req, res) => {
 
 
 const getPlant = async (req, res) => {
-    const idNumber = parseInt(req.params.PlantID);
+    const idNumber = parseInt(req.params.id);
     if(isNaN(idNumber)) {
         res.status(400).send({error: `Invalid plant ID ${req.params.PlantID}`});
         return null;
