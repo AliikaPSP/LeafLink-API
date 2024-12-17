@@ -12,6 +12,18 @@ export default {
     },
     goToUpdate(id) {
       this.$router.push({ name: 'plantUpdate', params: { id } });
+    },
+
+    async deletePlant(plantId) {
+      try {
+        // Send DELETE request to backend
+        await fetch(`http://localhost:8080/plants/${plantId}`, { method: 'DELETE' });
+        // Refresh the list or notify the user that the plant has been deleted
+        this.$emit('plantDeleted', plantId); // Notify parent to refresh the plant list
+        console.log('Plant deleted');
+      } catch (err) {
+        console.error('Failed to delete plant:', err);
+      }
     }
   }
 }
@@ -33,6 +45,7 @@ export default {
         <td>
           <button @click="goToDetails(item.PlantID)">Details</button>
           <button @click="goToUpdate(item.PlantID)">Update</button>
+          <button @click="deletePlant(item.PlantID)">Delete</button>
         </td>
       </tr>
     </tbody>
