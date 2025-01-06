@@ -102,7 +102,7 @@ body {
   margin-top: 5rem; /* Adjust this based on the height of the header */
 }
 footer {
-  background-color: #1d4908;
+  background-color: #7D9883;
   color: #fff;
   text-align: center;
   padding: 1rem;

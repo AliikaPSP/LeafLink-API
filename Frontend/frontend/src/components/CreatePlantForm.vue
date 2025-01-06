@@ -55,27 +55,41 @@ export default {
   <form @submit.prevent="createPlant">
     <h2>Create a New Plant</h2>
     <div>
-      <label for="PlantName">Plant Name:</label>
-      <input v-model="plant.PlantName" type="text" id="PlantName" required />
+
+      <input class="w-100 mb-1" v-model="plant.PlantName" type="text" id="PlantName" placeholder="Plant Name" required />
     </div>
     <div>
-      <label for="Description">Description:</label>
-      <textarea v-model="plant.Description" id="Description" required></textarea>
+      <textarea class="w-100 mb-1" v-model="plant.Description" id="Description" placeholder="Description" required></textarea>
     </div>
-    <div>
-      <label for="Size">Size:</label>
-      <select v-model="plant.Size" id="Size">
+    <div class="mb-1">
+      <label class="col-3" for="Size">Size:</label>
+      <select class="col-9 text-center" v-model="plant.Size" id="Size">
         <option v-for="size in sizes" :key="size" :value="size">{{ size }}</option>
       </select>
     </div>
     <div>
-      <label for="PlantRequirements">Requirements:</label>
-      <textarea v-model="plant.PlantRequirements" id="PlantRequirements" required></textarea>
+      <textarea class="w-100 mb-1" v-model="plant.PlantRequirements" id="PlantRequirements" placeholder="Requirements" required></textarea>
     </div>
     <div>
-      <label for="PlantInstructions">Instructions:</label>
-      <textarea v-model="plant.PlantInstructions" id="PlantInstructions" required></textarea>
+      <textarea class="w-100 mb-1" v-model="plant.PlantInstructions" id="PlantInstructions" placeholder="Instructions" required></textarea>
     </div>
-    <button type="submit">Create Plant</button>
+    <div class="row d-flex justify-content-center">
+      <button class="w-50" type="submit">Create Plant</button>
+
+    </div>
   </form>
 </template>
+
+<style scoped class>
+button {
+  padding: 10px 20px;
+  background-color: #ffffff; /* Match button color with header */
+  color: #7D9883;
+  border: none;
+  border-radius: 20px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+</style>
