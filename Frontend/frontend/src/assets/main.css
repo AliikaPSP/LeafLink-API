@@ -39,3 +39,18 @@ a,
     margin-top: 4rem;
   }
 }
+
+.form-card {
+  grid-column: span 4; /* Form takes 6 columns */
+  background-color: #7d9883; /* Light background for the form */
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Table section styling */
+.table-section {
+  grid-column: span 8; /* Table takes 6 columns */
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+}

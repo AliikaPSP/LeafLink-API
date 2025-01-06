@@ -23,8 +23,8 @@ export default {
 </script>
 
 <template>
-  <main>
-    <h1>Plant Details</h1>
+  <main class="form-card">
+    <h1 class="text-white">Plant Details</h1>
 
     <div v-if="loading">Loading...</div>
     <div v-else-if="error">Error: {{ error }}</div>
