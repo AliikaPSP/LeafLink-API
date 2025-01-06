@@ -8,10 +8,11 @@ export default {
       updatedPlant: {
         PlantName: '',
         Description: '',
-        Size: '',
+        Size: 'Small',
         PlantRequirements: '',
         PlantInstructions: ''
-      }
+      },
+      sizes: ["Small", "Medium", "Large"]
     };
   },
   async created() {
@@ -52,34 +53,38 @@ export default {
 </script>
 
 <template>
-  <main>
-    <h1>Update Plant</h1>
+  <main class="form-card">
+    <h1 class="text-center text-white">Update Plant</h1>
     
     <div v-if="loading">Loading...</div>
     <div v-else-if="error">Error: {{ error }}</div>
     <div v-else>
       <form @submit.prevent="updatePlant">
         <div>
-          <label for="PlantName">Plant Name:</label>
-          <input type="text" v-model="updatedPlant.PlantName" id="PlantName" required />
+          <label class="col-12" for="PlantName">Plant Name:</label>
+          <input class="col-12 mb-1" type="text" v-model="updatedPlant.PlantName" placeholder="Plant Name" id="PlantName" required />
         </div>
         <div>
-          <label for="Description">Description:</label>
-          <textarea v-model="updatedPlant.Description" id="Description" required></textarea>
+          <label class="col-12" for="Description">Description:</label>
+          <textarea class="col-12 mb-1" v-model="updatedPlant.Description" id="Description" required></textarea>
         </div>
         <div>
-          <label for="Size">Size:</label>
-          <input type="text" v-model="updatedPlant.Size" id="Size" required />
+          <label class="col-2" for="Size">Size:</label>
+          <select class="col-10 text-center mb-1" v-model="plant.Size" id="Size">
+            <option v-for="size in sizes" :key="size" :value="size">{{ size }}</option>
+          </select>
         </div>
         <div>
-          <label for="PlantRequirements">Plant Requirements:</label>
-          <textarea v-model="updatedPlant.PlantRequirements" id="PlantRequirements" required></textarea>
+          <label class="col-12" for="PlantRequirements">Plant Requirements:</label>
+          <textarea class="col-12 mb-1" v-model="updatedPlant.PlantRequirements" id="PlantRequirements" required></textarea>
         </div>
         <div>
-          <label for="PlantInstructions">Plant Instructions:</label>
-          <textarea v-model="updatedPlant.PlantInstructions" id="PlantInstructions" required></textarea>
+          <label class="col-12" for="PlantInstructions">Plant Instructions:</label>
+          <textarea class="col-12 mb-1" v-model="updatedPlant.PlantInstructions" id="PlantInstructions" required></textarea>
         </div>
-        <button type="submit">Update Plant</button>
+        <div class="row d-flex justify-content-center">
+          <button class="w-50" type="submit">Update Plant</button>
+        </div>
       </form>
     </div>
   </main>

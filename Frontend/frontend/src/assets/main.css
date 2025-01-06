@@ -54,3 +54,15 @@ a,
   grid-column: span 8; /* Table takes 6 columns */
   overflow-x: auto; /* Allow horizontal scrolling if needed */
 }
+
+button {
+  padding: 10px 20px;
+  background-color: #ffffff; /* Match button color with header */
+  color: #7D9883;
+  border: none;
+  border-radius: 20px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
