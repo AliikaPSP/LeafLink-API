@@ -10,7 +10,7 @@ export default {
     };
   },
   async created() {
-    await this.fetchPlants();
+    this.allPlants = await (await fetch('http://localhost:8080/plants')).json();
   },
   methods: {
     async fetchPlants() {

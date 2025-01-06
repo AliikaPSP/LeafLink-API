@@ -33,9 +33,9 @@ exports.create = async (req, res) => {
     // res.status(201)
     //     .location(`${Utils.getBaseURL(req)}/plants/${createdPlant.PlantID}`)
     //     .send(createdPlant.PlantID);
-    res
-    .location(`${Utils.getBaseUrl(req)}/plants/${createdPlant.PlantID}`)
-    .sendStatus(201);
+    res.status(201).send(createdPlant)
+    // .location(`${Utils.getBaseUrl(req)}/plants/${createdPlant.PlantID}`)
+    // .sendStatus(201);
 }
 
 exports.editById = async (req, res) => {

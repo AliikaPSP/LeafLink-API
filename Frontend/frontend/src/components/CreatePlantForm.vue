@@ -14,25 +14,30 @@ export default {
   },
   methods: {
     async createPlant() {
-      try {
-        // Send POST request to backend
-        const response = await fetch("http://localhost:8080/plants", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(this.plant)
-        });
+  try {
+    const response = await fetch("http://localhost:8080/plants", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(this.plant),
+    });
 
-        if (!response.ok) throw new Error("Failed to create plant");
+    if (!response.ok) throw new Error("Failed to create plant");
 
-        const newPlant = await response.json();
-        this.$emit("plantCreated", newPlant); // Notify parent component to update plant list
-        alert("Plant created successfully!");
-        this.resetForm(); // Reset the form after successful submission
-      } catch (err) {
-        console.error("Error creating plant:", err);
-        alert("Failed to create plant. Please try again.");
-      }
-    },
+    const newPlant = await response.json();
+
+    // Emit the new plant to parent
+    this.$emit("plantCreated", newPlant);
+
+    // Optionally, refresh the entire plant list
+    await this.$parent.fetchPlants();
+
+    // Reset the form
+    this.resetForm();
+  } catch (err) {
+    console.error("Error creating plant:", err);
+    alert("Failed to create plant. Please try again.");
+  }
+},
     resetForm() {
       this.plant = {
         PlantName: "",
