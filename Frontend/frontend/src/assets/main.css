@@ -23,12 +23,19 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
-    place-items: center;
+    display: grid;
+    margin-top: 6rem;
   }
 
   #app {
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  body {
+    display: grid;
+    margin-top: 4rem;
   }
 }
