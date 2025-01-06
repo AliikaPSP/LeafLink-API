@@ -19,6 +19,9 @@ export default {
     async handlePlantCreated(newPlant) {
       // Update the plant list when a new plant is created
       this.allPlants.push(newPlant);
+    },
+    async handlePlantDeleted(plantId) {
+      this.allPlants = this.allPlants.filter(plant => plant.PlantID !== plantId);
     }
   }
 };
@@ -27,6 +30,6 @@ export default {
 <template>
   <main>
     <CreatePlantForm @plantCreated="handlePlantCreated" />
-    <PlantsTable :items="allPlants" />
+    <PlantsTable :items="allPlants" @plantDeleted="handlePlantDeleted" />
   </main>
 </template>
