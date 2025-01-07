@@ -8,4 +8,6 @@ module.exports = (app) => {
         .get(PlantListsController.getById)
         .put(PlantListsController.editById)
         .delete(PlantListsController.deleteById)
+    app.route("/plantlists/update")
+        .patch(PlantListsController.update)
 }

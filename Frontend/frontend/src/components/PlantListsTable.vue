@@ -31,11 +31,11 @@ export default {
   margin: 0px 0;
   font-size: 1rem;
   text-align: left;
-  background-color: #e6e4d7; /* Body background color */
+  background-color: #e6e4d7;
 }
 
 .custom-table thead {
-  background-color: #7D9883; /* Header background color */
+  background-color: #7D9883;
   color: white;
   font-weight: bold;
 }
@@ -45,16 +45,15 @@ export default {
   padding: 12px 15px;
 }
 
-/* Change body text color */
 .custom-table tbody tr td {
   color: #618068;
 }
 
 .custom-table tbody tr:nth-child(even) {
-  background-color: #f4f4f4; /* Stripe effect */
+  background-color: #f4f4f4;
 }
 
 .custom-table tbody tr:hover {
-  background-color: #e0e0e0; /* Hover effect */
+  background-color: #e0e0e0;
 }
 </style>
