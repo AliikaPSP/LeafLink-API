@@ -4,10 +4,10 @@ module.exports = (app) => {
     app.route("/plantlists")
         .get(PlantListsController.getAll)
         .post(PlantListsController.create)
-    app.route("/plantlists/:id")
+    app.route("/plantlists/:id/")
         .get(PlantListsController.getById)
         .put(PlantListsController.editById)
         .delete(PlantListsController.deleteById)
-    app.route("/plantlists/update")
+    app.route("/plantlists/:id/update")
         .patch(PlantListsController.update)
 }

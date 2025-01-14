@@ -55,17 +55,27 @@ exports.create = async (req, res) => {
 
 exports.editById = async (req, res) => {
     const plantlist = await getPlantlist(req, res);
-    if (!plantlist) { return; }
+    if (!plantlist) {
+        return res.status(404).send({ error: "Plant list not found" });
+    }
+    
     if (!req.body.UserID || !req.body.PlantID) {
         return res.status(400).send({ error: "One or more parameters are missing" });
     }
+    
     plantlist.UserID = req.body.UserID;
     plantlist.PlantID = req.body.PlantID;
-    await plantlist.save();
-    return res.status(201)
-        .location(`${Utils.getBaseURL(req)}/plantlists/${plantlist.PlantListID}`)
-        .send(plantlist);
-}
+    
+    try {
+        await plantlist.save();
+        return res.status(200)
+          .location(`${Utils.getBaseURL(req)}/plantlists/${plantlist.PlantListID}`)
+          .send(plantlist);
+    } catch (error) {
+        console.error("Error saving plant list:", error);
+        return res.status(500).send({ error: "Failed to update plant list" });
+    }
+};
 
 exports.deleteById = async (req, res) => {
     const plantlist = await getPlantlist(req, res);
@@ -75,9 +85,9 @@ exports.deleteById = async (req, res) => {
 }
 
 const getPlantlist = async (req, res) => {
-    const idNumber = parseInt(req.params.PlantListID);
+    const idNumber = parseInt(req.params.id);
     if (isNaN(idNumber)) {
-        res.status(400).send({ error: `Invalid plant list ID ${req.params.PlantListID}` });
+        res.status(400).send({ error: `Invalid plant list ID ${req.params.id}` });
         return null;
     }
     const plantlist = await db.plantlists.findByPk(idNumber);
