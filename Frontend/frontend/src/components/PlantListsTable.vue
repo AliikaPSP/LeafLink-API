@@ -1,52 +1,71 @@
+<template>
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>UserID</th>
+        <th>Plants</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="item in items" :key="item.PlantListID">
+        <td>{{ item.UserID }}</td>
+        <td>{{ item.PlantID }}</td>
+        <td class="actions">
+          <button class="btn btn-info" @click="goToUpdate(item.PlantListID)">
+            Update
+          </button>
+          <button class="btn btn-danger" @click="deletePlant(item.PlantListID)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</template>
+
 <script>
 export default {
-    name: "PlantListsTable",
-    props: {
-        items: Array
-    },
-    methods: {
+  name: "PlantListsTable",
+  props: {
+    items: Array, // Array of plant list objects
+  },
+  methods: {
+    // Navigate to the update page for the selected plant list
     goToUpdate(id) {
       this.$router.push({ name: "plantListUpdate", params: { id } });
     },
+
+    // Delete the selected plant list
     async deletePlant(plantListId) {
       try {
-        await fetch(`http://localhost:8080/plants/${PlantListID}`, {
+        const response = await fetch(`http://localhost:8080/plantlists/${plantListId}`, {
           method: "DELETE",
         });
-        this.$emit("plantListDeleted", plantListId);
+        if (!response.ok) {
+          throw new Error(`Failed to delete plant list with ID: ${plantListId}`);
+        }
+        alert("Plant list deleted successfully!");
+
+        // Find the index of the deleted plant list and remove it from the local items array
+        const index = this.items.findIndex((item) => item.PlantListID === plantListId);
+        if (index !== -1) {
+          this.items.splice(index, 1);
+        }
       } catch (err) {
-        console.error("Failed to delete plant:", err);
+        console.error("Failed to delete plant list:", err);
+        alert("An error occurred while deleting the plant list.");
       }
     },
-  },
-}
-</script>
 
-<template>
-    <table class="custom-table">
-        <thead>
-            <tr>
-            <th>UserID</th>
-            <th>PlantID</th>  
-            <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="item in items" :key="item.PlantListID">
-                <td>{{ item.UserID }}</td>
-                <td>{{ item.PlantID }}</td>
-                <td class="actions">
-                  <button class="btn btn-info" @click="goToUpdate(item.PlantListID)">
-                    Update
-                  </button>
-                  <button class="btn btn-danger" @click="deletePlant(item.PlantListID)">
-                    Delete
-                  </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</template>
+    // Get the plant name by PlantID
+    getPlantNameByID(plantID) {
+      const plant = this.$parent.allPlants.find((p) => p.PlantID === plantID);
+      return plant ? plant.PlantName : "Unknown";
+    },
+  },
+};
+</script>
 
 <style scoped>
 /* Table styling */
