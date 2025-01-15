@@ -10,7 +10,7 @@
     <tbody>
       <tr v-for="item in items" :key="item.PlantListID">
         <td>{{ item.UserID }}</td>
-        <td>{{ item.PlantID }}</td>
+        <td>{{ Array.isArray(item.PlantID) ? item.PlantID.join(', ') : item.PlantID }}</td>
         <td class="actions">
           <button class="btn btn-info" @click="goToUpdate(item.PlantListID)">
             Update
