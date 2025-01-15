@@ -15,13 +15,10 @@ module.exports = (sequelize, DataTypes) => {
                 },
             },
             PlantID: {
-                type: DataTypes.INTEGER,
-                references: {
-                    model: 'Plants',
-                    key: 'PlantID',
+                type: DataTypes.JSON,
+                defaultValue: [],
                 },
             },
-        },
         {
             timestamps: true,
         }
