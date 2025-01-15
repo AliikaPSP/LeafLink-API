@@ -36,62 +36,63 @@
   </template>
   
   <script>
-  export default {
-    data() {
-      return {
-        plantList: null,
-        loading: true,
-        error: null,
-      };
-    },
-    async created() {
-      const id = this.$route.params.id;
+export default {
+  data() {
+    return {
+      plantList: null, // Correct naming
+      loading: true,
+      error: null,
+    };
+  },
+  async created() {
+    const id = this.$route.params.id;
+    try {
+      const response = await fetch(`http://localhost:8080/plantlists/${id}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch plant list details: ${response.statusText}`);
+      }
+      const data = await response.json();
+      this.plantList = data; // Use consistent naming
+    } catch (err) {
+      console.error(err);
+      this.error = err.message;
+    } finally {
+      this.loading = false;
+    }
+  },
+  methods: {
+    async updatePlantList() {
       try {
-        const response = await fetch(`http://localhost:8080/plantlists/${id}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch plant list details: ${response.statusText}`);
+        const id = this.$route.params.id;
+        if (!this.plantList.UserID || !this.plantList.PlantID) {
+          alert("User ID and Plant ID are required.");
+          return;
         }
-        const data = await response.json();
-        this.plantList = data;
+
+        const requestData = {
+          UserID: this.plantList.UserID,
+          PlantID: this.plantList.PlantID,
+        };
+
+        const response = await fetch(`http://localhost:8080/plantlists/${id}/update`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to update plant list: ${response.statusText}`);
+        }
+
+        this.$router.push({ name: "plantListView" });
+        alert("Plant list updated successfully");
       } catch (err) {
         console.error(err);
         this.error = err.message;
-      } finally {
-        this.loading = false;
       }
     },
-    methods: {
-      async updatePlantList() {
-        try {
-          const id = this.$route.params.id;
-  
-          // Prepare the payload for the PATCH request
-          const requestData = {
-            UserID: this.plantList.UserID,
-            PlantIDs: [this.plantList.PlantID], // Ensure PlantIDs is sent as an array
-          };
-  
-          const response = await fetch(`http://localhost:8080/plantlists/${id}/update`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestData),
-          });
-  
-          if (!response.ok) {
-            throw new Error(`Failed to update plant list: ${response.statusText}`);
-          }
-  
-          // Redirect to the plant list view after a successful update
-          this.$router.push({ name: "plantListView" });
-          alert("Plant list updated successfully");
-        } catch (err) {
-          console.error(err);
-          this.error = err.message;
-        }
-      },
-    },
-  };
-  </script>
-  
+  },
+};
+</script>
