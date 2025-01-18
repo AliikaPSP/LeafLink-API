@@ -8,10 +8,14 @@ export default {
     };
   },
   async created() {
-    const plantId = this.$route.params.id;  // Get the plant id from the URL
+    const plantId = this.$route.params.id; // Get the plant id from the URL
     try {
       const response = await fetch(`http://localhost:8080/plants/${plantId}`);
-      if (!response.ok) throw new Error('Failed to fetch plant details');
+      if (response.status === 404) {
+        throw new Error('Plant not found (404)');
+      } else if (!response.ok) {
+        throw new Error(`Unexpected error: ${response.status}`);
+      }
       this.plant = await response.json();
     } catch (err) {
       this.error = err.message;

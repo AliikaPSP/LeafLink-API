@@ -39,6 +39,11 @@ const router = createRouter({
       name: 'plantListUpdate',
       component: () => import('../views/PlantListUpdateView.vue'),
     },
+    {
+      path: '/plantLists/:id',
+      name: 'plantListDetails',
+      component: () => import('../views/PlantListDetailsView.vue'),
+    },
   ],
 })
 

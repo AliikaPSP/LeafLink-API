@@ -50,46 +50,6 @@ exports.create = async (req, res) => {
     }
 };
 
-
-// exports.create = async (req, res) => {
-//     if (!req.body.UserID || !req.body.PlantIDs || !Array.isArray(req.body.PlantIDs)) {
-//         return res.status(400).send({ error: "UserID and PlantIDs array are required" });
-//     }
-    
-//     try {
-//         const user = await db.users.findByPk(req.body.UserID);
-//         if (!user) {
-//             return res.status(404).send({ error: "User not found" });
-//         }
-
-//         const plants = await db.plants.findAll({ where: { PlantID: { [Op.in]: req.body.PlantIDs } } });
-//         if (plants.length !== req.body.PlantIDs.length) {
-//             return res.status(400).send({ error: "One or more PlantIDs are invalid" });
-//         }
-
-//         const newPlantlists = await db.plantlists.create({
-//             UserID: req.body.UserID,
-//             PlantID: req.body.PlantIDs,
-//         });
-        
-
-//         // Using a transaction to ensure atomicity
-//         const t = await db.sequelize.transaction();
-//         try {
-//             const createdPlantlists = await db.plantlists.bulkCreate(newPlantlists, { transaction: t });
-//             await t.commit();
-//             res.status(201).location(`${Utils.getBaseURL(req)}/plantlists`).send({ plantListIDs: createdPlantlists.map(pl => pl.PlantListID) });
-//         } catch (error) {
-//             await t.rollback();
-//             console.error(error);
-//             res.status(500).send({ error: "An error occurred while creating plant lists" });
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send({ error: "An unexpected error occurred" });
-//     }
-// };
-
 exports.editById = async (req, res) => {
     const plantlist = await getPlantlist(req, res);
     if (!plantlist) {

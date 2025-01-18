@@ -12,6 +12,9 @@
         <td>{{ item.UserID }}</td>
         <td>{{ Array.isArray(item.PlantID) ? item.PlantID.join(', ') : item.PlantID }}</td>
         <td class="actions">
+          <button class="btn btn-info" @click="goToDetails(item.PlantListID)">
+            Details
+          </button>
           <button class="btn btn-info" @click="goToUpdate(item.PlantListID)">
             Update
           </button>
@@ -34,6 +37,9 @@ export default {
     // Navigate to the update page for the selected plant list
     goToUpdate(id) {
       this.$router.push({ name: "plantListUpdate", params: { id } });
+    },
+    goToDetails(id) {
+      this.$router.push({ name: "plantListDetails", params: { id } });
     },
 
     // Delete the selected plant list
